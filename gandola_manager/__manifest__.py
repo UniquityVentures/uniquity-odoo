@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "gandola_manager",
-
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
+    'name': "Gandola",
 
     'description': """
-Long description of module's purpose
+Gandola Manager App for Uniquity Ventures
+=========================================
+
     """,
 
     'author': "Uniquity Ventures",
-    'category': 'Uncategorized',
+    'category': 'Administration',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
 
+    "auto_install": True,
+    "license": "LGPL-3",
     # always loaded
     'data': [
         'security/ir.model.access.csv',
