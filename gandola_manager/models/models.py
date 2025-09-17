@@ -26,6 +26,7 @@ class Site(models.Model):
     address = fields.Text(string='Address')
 
 class Invoice(models.Model):
+    _name = 'gandola_manager.invoice'
     site = fields.One2many('gandola_manager.site', 'invoices')
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
