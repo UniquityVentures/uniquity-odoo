@@ -8,6 +8,7 @@ class Gandola(models.Model):
     _description = 'Gandola Management'
 
     name = fields.Char(string='Gandola Name', required=True)
+    lending_records = fields.Many2one('gandola_manager.lending_record', "gandola")
 
 
 class LendingRecord(models.Model):
@@ -24,6 +25,8 @@ class Site(models.Model):
 
     name = fields.Char(string='Site Name', required=True)
     address = fields.Text(string='Address')
+    lending_records = fields.Many2one('gandola_manager.lending_record', "site")
+    invoices = fields.Many2one('gandola_manager.invocie', "site")
 
 class Invoice(models.Model):
     _name = 'gandola_manager.invoice'
