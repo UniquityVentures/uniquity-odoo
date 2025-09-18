@@ -18,7 +18,7 @@ class Site(models.Model):
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
     gandola = fields.Many2many('gandola_manager.gandola')
-    customer = fields.One2many('res.partner')
+    customer = fields.Many2many('res.partner')
 
     @api.model
     def create(self, vals):
@@ -45,7 +45,7 @@ class Site(models.Model):
             'invoice_date': fields.Date.context_today(self),
             'invoice_line_ids': [
                 (0, 0, {
-                    'product_id': gandola,
+                    'product_id': gandola.id,
                     'quantity': 2,
                 })
             ]
@@ -58,7 +58,7 @@ class Site(models.Model):
             'invoice_date': fields.Date.context_today(self),
             'invoice_line_ids': [
                 (0, 0, {
-                    'product_id': tpi,
+                    'product_id': tpi.id,
                     'quantity': 2,
                 })
             ]
@@ -71,7 +71,7 @@ class Site(models.Model):
             'invoice_date': fields.Date.context_today(self),
             'invoice_line_ids': [
                 (0, 0, {
-                    'product_id': dti,
+                    'product_id': dti.id,
                     'quantity': 2,
                 })
             ]
