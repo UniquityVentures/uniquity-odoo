@@ -10,7 +10,7 @@ Gandola Manager App for Uniquity Ventures
     "category": "Inventory",
     "version": "0.1",
     # any module necessary for this one to work correctly
-    "depends": ["base", "account"],
+    "depends": ["base", "account", "web"],
     "auto_install": True,
     "license": "LGPL-3",
     # always loaded

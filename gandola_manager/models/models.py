@@ -18,4 +18,3 @@ class Site(models.Model):
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
     gandola = fields.Many2many('gandola_manager.gandola')
-

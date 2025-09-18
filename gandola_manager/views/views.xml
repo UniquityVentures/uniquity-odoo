@@ -3,6 +3,7 @@
     <!-- explicit list view definition -->
     <record model="ir.ui.view" id="gandola_manager.list_gandola">
       <field name="name">gandola_manager list</field>
+      <field name="model">gandola_manager.gandola</field>
       <field name="arch" type="xml">
         <list>
           <field name="name"/>
@@ -33,10 +34,6 @@
       <field name="view_mode">list,form</field>
     </record>
 
-
-
-
-
     <!-- Top menu item -->
     <menuitem name="gandola_manager" id="gandola_manager.menu_root"/>
     <!-- menu categories -->
@@ -45,7 +42,6 @@
     <!-- actions -->
     <menuitem name="List" id="gandola_manager.gandola_list" parent="gandola_manager.gandola"
               action="gandola_manager.gandola_action_window"/>
-
 
     <menuitem name="List" id="gandola_manager.site_record_list" parent="gandola_manager.site"
               action="gandola_manager.site_action_window"/>
