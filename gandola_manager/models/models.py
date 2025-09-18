@@ -11,6 +11,14 @@ class Gandola(models.Model):
     name = fields.Char(string="Gandola Name", required=True)
 
 
+
+
+class GandolaSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    gandola_product_ids = fields.Many2one("product.product", "Products that are used to invoice generation")
+    gandola_payment_term_id = fields.Many2one("account.payment.term", "Payment term that will be used in invoices")
+
 class Site(models.Model):
     _name = "gandola_manager.site"
     _description = "Site Management"
@@ -40,18 +48,11 @@ class Site(models.Model):
             return new_site_record
 
         # Define the product SKUs you want to find.
-        product_refs = ["GRC_001", "TPI_001", "DTI_001"]
+        products = self.env.company.gandola_products
 
-        for ref in product_refs:
-            product = self.env["product.product"].search(
-                [("default_code", "=", ref)], limit=1
-            )
-            if not product:
-                # Raise an error if a product is not found, to avoid creating an incomplete invoice.
-                raise UserError(
-                    _("Product with internal reference '%s' not found.") % ref
-                )
+        payment_term = self.env.company.gandola_payment_term
 
+        for product in products:
             # Prepare the values for one invoice line
 
             self.env["account.move"].create(
@@ -59,6 +60,7 @@ class Site(models.Model):
                     "partner_id": new_site_record.customer_id.id,
                     "move_type": "out_invoice",
                     "invoice_date": fields.Date.context_today(self),
+                    "invoice_payment_term_id": payment_term,
                     # --- FIX 3: Pass the site's ID to the new inverse field ---
                     # This automatically links the invoice back to this site.
                     "site_id": new_site_record.id,
