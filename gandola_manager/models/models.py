@@ -21,13 +21,8 @@ class Site(models.Model):
     end_date = fields.Date(string="End Date")
     gandola_ids = fields.Many2many("gandola_manager.gandola", string="Gandolas")
 
-    # --- FIX 1: Changed customer to a Many2one relationship ---
-    # A site typically belongs to a single customer, which simplifies creating invoices.
     customer_id = fields.Many2one("res.partner", string="Customer", required=True)
 
-    # --- FIX 2: Changed invoices field to a One2many ---
-    # This allows a site to be linked to multiple invoices.
-    # The inverse field 'site_id' is added to the account.move model below.
     invoice_ids = fields.One2many("account.move", "site_id", string="Invoices")
 
     @api.model
@@ -46,7 +41,6 @@ class Site(models.Model):
 
         # Define the product SKUs you want to find.
         product_refs = ["GRC_001", "TPI_001", "DTI_001"]
-        invoice_lines_vals = []
 
         for ref in product_refs:
             product = self.env["product.product"].search(
@@ -59,7 +53,6 @@ class Site(models.Model):
                 )
 
             # Prepare the values for one invoice line
-            invoice_lines_vals.append()
 
             self.env["account.move"].create(
                 {
