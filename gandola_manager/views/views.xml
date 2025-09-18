@@ -142,7 +142,7 @@
       <field name="view_mode">kanban,list,form</field>
     </record>
 
-    <menuitem name="gandola_manager" id="gandola_manager.menu_root"/>
+    <menuitem name="Gandola Manager" id="gandola_manager.menu_root"/>
     <menuitem name="Gandola" id="gandola_manager.gandola" parent="gandola_manager.menu_root" action="gandola_manager.gandola_action_window"/>
     <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root" action="gandola_manager.site_action_window"/>
 
