@@ -1,6 +1,16 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="gandola_manager.list_site">
+      <field name="name">gandola_manager list</field>
+      <field name="model">gandola_manager.site</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+        </list>
+      </field>
+    </record>
+
     <record model="ir.ui.view" id="gandola_manager.list_gandola">
       <field name="name">gandola_manager list</field>
       <field name="model">gandola_manager.gandola</field>
@@ -11,15 +21,6 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="gandola_manager.list_site">
-      <field name="name">gandola_manager list</field>
-      <field name="model">gandola_manager.site</field>
-      <field name="arch" type="xml">
-        <list>
-          <field name="name"/>
-        </list>
-      </field>
-    </record>
 
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="gandola_manager.gandola_action_window">
