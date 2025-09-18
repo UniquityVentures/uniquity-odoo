@@ -37,14 +37,13 @@
 
     <!-- Top menu item -->
     <menuitem name="gandola_manager" id="gandola_manager.menu_root"/>
-    <!-- menu categories -->
+    <!-- menus -->
     <menuitem name="Gandola" id="gandola_manager.gandola" parent="gandola_manager.menu_root"/>
-    <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root"/>
-    <!-- actions -->
-    <menuitem name="List" id="gandola_manager.gandola_list" parent="gandola_manager.gandola"
+      <menuitem name="List" id="gandola_manager.gandola_list" parent="gandola_manager.gandola"
               action="gandola_manager.gandola_action_window"/>
 
-    <menuitem name="List" id="gandola_manager.site_record_list" parent="gandola_manager.site"
+    <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root"/>
+      <menuitem name="List" id="gandola_manager.site_record_list" parent="gandola_manager.site"
               action="gandola_manager.site_action_window"/>
 
   </data>
