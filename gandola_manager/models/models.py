@@ -9,21 +9,48 @@ class Gandola(models.Model):
 
     name = fields.Char(string="Gandola Name", required=True)
     site_ids = fields.Many2many("gandola_manager.site", string="Sites")
+    current_site_id = fields.Many2one("gandola_manager.site", string="Current Site", compute="_compute_current_site", store=False)
+    is_assigned = fields.Boolean(string="Is Currently Assigned", compute="_compute_current_site", store=False)
+
+    @api.depends('site_ids', 'site_ids.start_date', 'site_ids.end_date')
+    def _compute_current_site(self):
+        today = fields.Date.context_today(self)
+        for gandola in self:
+            current_site = False
+            for site in gandola.site_ids:
+                # Check if today falls between start_date and end_date (inclusive)
+                if site.start_date and site.end_date:
+                    if site.start_date <= today <= site.end_date:
+                        current_site = site
+                        break
+                # If only start_date is set, check if today is after start_date
+                elif site.start_date and not site.end_date:
+                    if site.start_date <= today:
+                        current_site = site
+                        break
+                # If only end_date is set, check if today is before end_date
+                elif not site.start_date and site.end_date:
+                    if today <= site.end_date:
+                        current_site = site
+                        break
+            
+            gandola.current_site_id = current_site
+            gandola.is_assigned = bool(current_site)
 
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    gandola_products = fields.Many2one("product.product", "Products for invoice generation")
+    gandola_products = fields.Many2many("product.product", string="Products for invoice generation")
     gandola_payment_term = fields.Many2one("account.payment.term", "Invoice payment term")
 
 
 class GandolaSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    gandola_product_ids = fields.Many2one(
+    gandola_product_ids = fields.Many2many(
         "product.product", 
-        "Products for invoice generation", 
+        string="Products for invoice generation", 
         related='company_id.gandola_products', 
         readonly=False
     )
