@@ -41,19 +41,37 @@ class Gandola(models.Model):
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    gandola_products = fields.Many2many("product.product", string="Products for invoice generation")
+    gandola_product = fields.Many2one("product.product", string="Products for invoice generation")
+    tpi_product = fields.Many2one("product.product", string="Products for invoice generation")
+    dti_product = fields.Many2one("product.product", string="Products for invoice generation")
+
     gandola_payment_term = fields.Many2one("account.payment.term", "Invoice payment term")
 
 
 class GandolaSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    gandola_product_ids = fields.Many2many(
+    gandola_product_id = fields.Many2one(
         "product.product", 
-        string="Products for invoice generation", 
-        related='company_id.gandola_products', 
+        string="Gondola Rent Product", 
+        related='company_id.gandola_product', 
         readonly=False
     )
+
+    tpi_product_id = fields.Many2one(
+        "product.product", 
+        string="TPI Product", 
+        related='company_id.tpi_product', 
+        readonly=False
+    )
+
+    dti_product_id = fields.Many2one(
+        "product.product", 
+        string="DTI Product", 
+        related='company_id.dti_product', 
+        readonly=False
+    )
+
     gandola_payment_term_id = fields.Many2one(
         "account.payment.term", 
         "Invoice payment term",
@@ -87,7 +105,7 @@ class Site(models.Model):
         if not new_site_record.customer_id:
             return new_site_record
 
-        products = self.env.company.gandola_products
+        products = self.env.company.gandola_product
         payment_term = self.env.company.gandola_payment_term
 
         for product in products:
