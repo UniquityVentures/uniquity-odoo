@@ -105,15 +105,24 @@ class Site(models.Model):
         if not new_site_record.customer_id:
             return new_site_record
 
-        products = self.env.company.gandola_product
-        payment_term = self.env.company.gandola_payment_term
+        company = self.env.company
+        payment_term = company.gandola_payment_term
+        
+        # Create invoices for each product type if they are configured
+        products_to_invoice = []
+        if company.gandola_product:
+            products_to_invoice.append(company.gandola_product)
+        if company.tpi_product:
+            products_to_invoice.append(company.tpi_product)
+        if company.dti_product:
+            products_to_invoice.append(company.dti_product)
 
-        for product in products:
+        for product in products_to_invoice:
             self.env["account.move"].create({
                 "partner_id": new_site_record.customer_id.id,
                 "move_type": "out_invoice",
                 "invoice_date": fields.Date.context_today(self),
-                "invoice_payment_term_id": payment_term,
+                "invoice_payment_term_id": payment_term.id if payment_term else False,
                 "site_id": new_site_record.id,
                 "invoice_line_ids": [(0, 0, {
                     "product_id": product.id,
