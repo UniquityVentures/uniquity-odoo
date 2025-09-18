@@ -18,6 +18,7 @@ Gandola Manager App for Uniquity Ventures
         "security/ir.model.access.csv",
         "views/views.xml",
         "views/templates.xml",
+        "views/settings.xml",
     ],
     # only loaded in demonstration mode
     "demo": [
