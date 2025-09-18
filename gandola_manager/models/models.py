@@ -33,8 +33,6 @@ class Site(models.Model):
 
         # Ensure a customer is set before proceeding
         if not new_site_record.customer_id:
-            # This check is good practice, though the 'required=True' on the field
-            # should prevent this from happening through the UI.
             return new_site_record
 
         # Define the product SKUs you want to find.
@@ -51,7 +49,6 @@ class Site(models.Model):
                 )
 
             # Prepare the values for one invoice line
-
             self.env["account.move"].create(
                 {
                     "partner_id": new_site_record.customer_id.id,
@@ -60,7 +57,6 @@ class Site(models.Model):
                     # --- FIX 3: Pass the site's ID to the new inverse field ---
                     # This automatically links the invoice back to this site.
                     "site_id": new_site_record.id,
-                    # --- FIX 4: Add all prepared lines to the invoice ---
                     "invoice_line_ids": [
                         (
                             0,
