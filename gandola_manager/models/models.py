@@ -41,9 +41,9 @@ class Gandola(models.Model):
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    gandola_product = fields.Many2one("product.product", string="Products for invoice generation")
-    tpi_product = fields.Many2one("product.product", string="Products for invoice generation")
-    dti_product = fields.Many2one("product.product", string="Products for invoice generation")
+    gandola_product = fields.Many2one("product.product", string="Gandola Rent Product")
+    tpi_product = fields.Many2one("product.product", string="TPI Product")
+    dti_product = fields.Many2one("product.product", string="DTI Product")
 
     gandola_payment_term = fields.Many2one("account.payment.term", "Invoice payment term")
 
