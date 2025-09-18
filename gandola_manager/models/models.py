@@ -63,15 +63,17 @@ class Site(models.Model):
                     # This automatically links the invoice back to this site.
                     "site_id": new_site_record.id,
                     # --- FIX 4: Add all prepared lines to the invoice ---
-                    "invoice_line_ids": (
-                        0,
-                        0,
-                        {
-                            "product_id": product.id,
-                            "quantity": 2,
-                            # The price will be determined automatically based on the product and partner pricelist.
-                        },
-                    ),
+                    "invoice_line_ids": [
+                        (
+                            0,
+                            0,
+                            {
+                                "product_id": product.id,
+                                "quantity": 2,
+                                # The price will be determined automatically based on the product and partner pricelist.
+                            },
+                        )
+                    ],
                 }
             )
 
