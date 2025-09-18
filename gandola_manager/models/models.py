@@ -20,9 +20,7 @@ class Site(models.Model):
     start_date = fields.Date(string="Start Date")
     end_date = fields.Date(string="End Date")
     gandola_ids = fields.Many2many("gandola_manager.gandola", string="Gandolas")
-
     customer_id = fields.Many2one("res.partner", string="Customer", required=True)
-
     invoice_ids = fields.One2many("account.move", "site_id", string="Invoices")
 
     @api.model
