@@ -9,6 +9,7 @@ class Gandola(models.Model):
     _description = "Gandola Management"
 
     name = fields.Char(string="Gandola Name", required=True)
+    site_ids = fields.Many2many("gandola_manager.site", string="Sites")
 
 
 
@@ -30,6 +31,12 @@ class Site(models.Model):
     gandola_ids = fields.Many2many("gandola_manager.gandola", string="Gandolas")
     customer_id = fields.Many2one("res.partner", string="Customer", required=True)
     invoice_ids = fields.One2many("account.move", "site_id", string="Invoices")
+    status = fields.Selection([
+        ('started', 'Started'),
+        ('docs_done', 'Docs Done'),
+        ('completed', 'Completed'),
+        ('payment_settled', 'Payment Settled')
+    ], string="Status", default='started')
 
     @api.model
     def create(self, vals):

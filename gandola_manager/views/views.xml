@@ -7,7 +7,69 @@
       <field name="arch" type="xml">
         <list>
           <field name="name"/>
+          <field name="address"/>
+          <field name="status" widget="badge" decoration-warning="status == 'started'" decoration-primary="status == 'docs_done'" decoration-info="status == 'completed'" decoration-success="status == 'payment_settled'"/>
+          <field name="gandola_ids" widget="many2many_tags"/>
+          <field name="invoice_ids" string="# Invoices"/>
         </list>
+      </field>
+    </record>
+
+    <!-- Kanban view for Site -->
+    <record model="ir.ui.view" id="gandola_manager.kanban_site">
+      <field name="name">gandola_manager site kanban</field>
+      <field name="model">gandola_manager.site</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="name"/>
+          <field name="address"/>
+          <field name="status"/>
+          <field name="gandola_ids"/>
+          <field name="invoice_ids"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_card oe_kanban_global_click">
+                <div class="oe_kanban_content">
+                  <div class="o_kanban_record_title">
+                    <field name="name"/>
+                  </div>
+                  <div class="o_kanban_record_body">
+                    <div>
+                      <strong>Status:</strong> 
+                      <span t-attf-class="badge badge-pill #{record.status.raw_value === 'payment_settled' ? 'badge-success' : record.status.raw_value === 'completed' ? 'badge-info' : record.status.raw_value === 'docs_done' ? 'badge-primary' : 'badge-warning'}">
+                        <field name="status"/>
+                      </span>
+                    </div>
+                    <div t-if="record.address.raw_value">
+                      <strong>Address:</strong> 
+                      <span><field name="address"/></span>
+                    </div>
+                    <div>
+                      <strong>Gandolas:</strong>
+                      <t t-if="record.gandola_ids.raw_value.length">
+                        <field name="gandola_ids" widget="many2many_tags"/>
+                      </t>
+                      <t t-else="">
+                        <span class="text-muted">No gandolas assigned</span>
+                      </t>
+                    </div>
+                    <div>
+                      <strong>Invoices:</strong>
+                      <t t-if="record.invoice_ids.raw_value.length">
+                        <span class="badge badge-pill badge-secondary">
+                          <t t-esc="record.invoice_ids.raw_value.length"/> invoices
+                        </span>
+                      </t>
+                      <t t-else="">
+                        <span class="text-muted">No invoices</span>
+                      </t>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
       </field>
     </record>
 
@@ -17,34 +79,62 @@
       <field name="arch" type="xml">
         <list>
           <field name="name"/>
+          <field name="site_ids" widget="many2many_tags"/>
         </list>
+      </field>
+    </record>
+
+    <!-- Kanban view for Gandola -->
+    <record model="ir.ui.view" id="gandola_manager.kanban_gandola">
+      <field name="name">gandola_manager kanban</field>
+      <field name="model">gandola_manager.gandola</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="name"/>
+          <field name="site_ids"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_card oe_kanban_global_click">
+                <div class="oe_kanban_content">
+                  <div class="o_kanban_record_title">
+                    <field name="name"/>
+                  </div>
+                  <div class="o_kanban_record_body">
+                    <strong>Sites:</strong>
+                    <t t-if="record.site_ids.raw_value.length">
+                      <field name="site_ids" widget="many2many_tags"/>
+                    </t>
+                    <t t-else="">
+                      <span class="text-muted">No sites assigned</span>
+                    </t>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
       </field>
     </record>
 
 
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="gandola_manager.gandola_action_window">
-      <field name="name">gandola_manager window</field>
+      <field name="name">Gandolas</field>
       <field name="res_model">gandola_manager.gandola</field>
-      <field name="view_mode">list,form</field>
+      <field name="view_mode">kanban,list,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="gandola_manager.site_action_window">
-      <field name="name">gandola_manager window</field>
+      <field name="name">Sites</field>
       <field name="res_model">gandola_manager.site</field>
-      <field name="view_mode">list,form</field>
+      <field name="view_mode">kanban,list,form</field>
     </record>
 
     <!-- Top menu item -->
     <menuitem name="gandola_manager" id="gandola_manager.menu_root"/>
     <!-- menus -->
-    <menuitem name="Gandola" id="gandola_manager.gandola" parent="gandola_manager.menu_root"/>
-      <menuitem name="List" id="gandola_manager.gandola_list" parent="gandola_manager.gandola"
-              action="gandola_manager.gandola_action_window"/>
-
-    <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root"/>
-      <menuitem name="List" id="gandola_manager.site_record_list" parent="gandola_manager.site"
-              action="gandola_manager.site_action_window"/>
+    <menuitem name="Gandola" id="gandola_manager.gandola" parent="gandola_manager.menu_root" action="gandola_manager.gandola_action_window"/>
+    <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root" action="gandola_manager.site_action_window"/>
 
   </data>
 </odoo>
