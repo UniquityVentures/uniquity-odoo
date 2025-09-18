@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from dateutil.relativedelta import relativedelta
 
 
 class Gandola(models.Model):
@@ -41,9 +42,9 @@ class Gandola(models.Model):
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    gandola_product = fields.Many2one("product.product", string="Products for invoice generation")
-    tpi_product = fields.Many2one("product.product", string="Products for invoice generation")
-    dti_product = fields.Many2one("product.product", string="Products for invoice generation")
+    gandola_product_id = fields.Many2one("product.product", string="Products for invoice generation")
+    tpi_product_id = fields.Many2one("product.product", string="Products for invoice generation")
+    dti_product_id = fields.Many2one("product.product", string="Products for invoice generation")
 
     gandola_payment_term = fields.Many2one("account.payment.term", "Invoice payment term")
 
@@ -54,21 +55,21 @@ class GandolaSettings(models.TransientModel):
     gandola_product_id = fields.Many2one(
         "product.product", 
         string="Gondola Rent Product", 
-        related='company_id.gandola_product', 
+        related='company_id.gandola_product_id', 
         readonly=False
     )
 
     tpi_product_id = fields.Many2one(
         "product.product", 
         string="TPI Product", 
-        related='company_id.tpi_product', 
+        related='company_id.tpi_product_id', 
         readonly=False
     )
 
     dti_product_id = fields.Many2one(
         "product.product", 
         string="DTI Product", 
-        related='company_id.dti_product', 
+        related='company_id.dti_product_id', 
         readonly=False
     )
 
@@ -108,16 +109,22 @@ class Site(models.Model):
         company = self.env.company
         payment_term = company.gandola_payment_term
         
-        # Create invoices for each product type if they are configured
-        products_to_invoice = []
-        if company.gandola_product:
-            products_to_invoice.append(company.gandola_product)
-        if company.tpi_product:
-            products_to_invoice.append(company.tpi_product)
-        if company.dti_product:
-            products_to_invoice.append(company.dti_product)
 
-        for product in products_to_invoice:
+        if company.gandola_product_id:
+            for i in range(3):
+                self.env["account.move"].create({
+                    "partner_id": new_site_record.customer_id.id,
+                    "move_type": "out_invoice",
+                    "invoice_date": fields.Date.context_today(self) + i * relativedelta(month=1),
+                    "invoice_payment_term_id": payment_term.id if payment_term else False,
+                    "site_id": new_site_record.id,
+                    "invoice_line_ids": [(0, 0, {
+                        "product_id": company.gandola_product_id.id,
+                        "quantity": 2,
+                    })],
+                })
+
+        if company.tpi_product_id:
             self.env["account.move"].create({
                 "partner_id": new_site_record.customer_id.id,
                 "move_type": "out_invoice",
@@ -125,7 +132,20 @@ class Site(models.Model):
                 "invoice_payment_term_id": payment_term.id if payment_term else False,
                 "site_id": new_site_record.id,
                 "invoice_line_ids": [(0, 0, {
-                    "product_id": product.id,
+                    "product_id": company.tpi_product_id.id,
+                    "quantity": 2,
+                })],
+            })
+
+        if company.dti_product_id:
+            self.env["account.move"].create({
+                "partner_id": new_site_record.customer_id.id,
+                "move_type": "out_invoice",
+                "invoice_date": fields.Date.context_today(self),
+                "invoice_payment_term_id": payment_term.id if payment_term else False,
+                "site_id": new_site_record.id,
+                "invoice_line_ids": [(0, 0, {
+                    "product_id": company.dti_product_id.id,
                     "quantity": 2,
                 })],
             })
