@@ -1,6 +1,5 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
     <record model="ir.ui.view" id="gandola_manager.list_site">
       <field name="name">gandola_manager list</field>
       <field name="model">gandola_manager.site</field>
@@ -15,7 +14,6 @@
       </field>
     </record>
 
-    <!-- Kanban view for Site -->
     <record model="ir.ui.view" id="gandola_manager.kanban_site">
       <field name="name">gandola_manager site kanban</field>
       <field name="model">gandola_manager.site</field>
@@ -84,7 +82,6 @@
       </field>
     </record>
 
-    <!-- Kanban view for Gandola -->
     <record model="ir.ui.view" id="gandola_manager.kanban_gandola">
       <field name="name">gandola_manager kanban</field>
       <field name="model">gandola_manager.gandola</field>
@@ -116,8 +113,6 @@
       </field>
     </record>
 
-
-    <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="gandola_manager.gandola_action_window">
       <field name="name">Gandolas</field>
       <field name="res_model">gandola_manager.gandola</field>
@@ -130,9 +125,7 @@
       <field name="view_mode">kanban,list,form</field>
     </record>
 
-    <!-- Top menu item -->
     <menuitem name="gandola_manager" id="gandola_manager.menu_root"/>
-    <!-- menus -->
     <menuitem name="Gandola" id="gandola_manager.gandola" parent="gandola_manager.menu_root" action="gandola_manager.gandola_action_window"/>
     <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root" action="gandola_manager.site_action_window"/>
 
