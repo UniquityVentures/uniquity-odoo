@@ -2,80 +2,43 @@
 <odoo>
     <data>
         <record id="gandola_manager_settings_view_form" model="ir.ui.view">
-            <field name="name">Gandola Manager Settings</field>
+            <field name="name">res.config.settings.view.form.inherit.gandola_manager</field>
             <field name="model">res.config.settings</field>
-            <field name="inherit_id" ref="base.res_config_settings_view_form" />
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form" position="inside">
-                    <div class="app_settings_block" data-string="Gandola Settings" string="Gandola" data-key="gandola_manager">
-                        <h2>Gandola Manager Settings</h2>
-                        <div class="row mt16 o_settings_container">
-							<div class="o_setting_box">
-								<div class="o_setting_right_pane">
-									<label for="gandola_product_id"/>
-									<div class="text-muted">
-										Gandola Product
-									</div>
-									<div class="content-group">
-										<div class="mt16">
-											<field name="gandola_product_id" class="o_light_label"/>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="o_setting_box">
-								<div class="o_setting_right_pane">
-									<label for="tpi_product_id"/>
-									<div class="text-muted">
-										TPI Product
-									</div>
-									<div class="content-group">
-										<div class="mt16">
-											<field name="tpi_product_id" class="o_light_label"/>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="o_setting_box">
-								<div class="o_setting_right_pane">
-									<label for="dti_product_id"/>
-									<div class="text-muted">
-										DTI Product
-									</div>
-									<div class="content-group">
-										<div class="mt16">
-											<field name="dti_product_id" class="o_light_label"/>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="o_setting_box">
-                                <div class="o_setting_right_pane">
-                                    <label for="gandola_payment_term_id"/>
-                                    <div class="text-muted">
-                                        Invoice payment term
-                                    </div>
-                                    <div class="content-group">
-                                        <div class="mt16">
-                                            <field name="gandola_payment_term_id" class="o_light_label"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <app data-string="Gandola Manager" string="Gandola Manager" name="gandola_manager" groups="base.group_system">
+                        <block title="Product Configuration" id="gandola_product_settings">
+                            <setting string="Gandola Rent Product">
+                                <field name="gandola_product_id"/>
+                                <div class="text-muted">Product used for gandola rental invoices (generates 3 monthly invoices)</div>
+                            </setting>
+                            <setting string="TPI Product">
+                                <field name="tpi_product_id"/>
+                                <div class="text-muted">Product used for TPI services</div>
+                            </setting>
+                            <setting string="DTI Product">
+                                <field name="dti_product_id"/>
+                                <div class="text-muted">Product used for DTI services</div>
+                            </setting>
+                            <setting string="Payment Terms">
+                                <field name="gandola_payment_term_id"/>
+                                <div class="text-muted">Default payment terms for generated invoices</div>
+                            </setting>
+                        </block>
+                    </app>
                 </xpath>
             </field>
         </record>
 
+        <!-- Keep your existing action and menu -->
         <record id="gandola_manager_settings_action" model="ir.actions.act_window">
             <field name="name">Gandola Configuration</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.config.settings</field>
-            <field name="view_id" ref="gandola_manager_settings_view_form"/>
             <field name="view_mode">form</field>
             <field name="target">inline</field>
-            <field name="context">{'module' : 'gandola_manager'}</field>
+            <field name="context">{'module': 'gandola_manager'}</field>
         </record>
 
         <menuitem
