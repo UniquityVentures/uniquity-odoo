@@ -1,5 +1,6 @@
 <odoo>
   <data>
+    <!-- Site List View -->
     <record model="ir.ui.view" id="gandola_manager.list_site">
       <field name="name">gandola_manager list</field>
       <field name="model">gandola_manager.site</field>
@@ -14,6 +15,7 @@
       </field>
     </record>
 
+    <!-- Site Kanban View -->
     <record model="ir.ui.view" id="gandola_manager.kanban_site">
       <field name="name">gandola_manager site kanban</field>
       <field name="model">gandola_manager.site</field>
@@ -71,80 +73,53 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="gandola_manager.list_gandola">
-      <field name="name">gandola_manager list</field>
-      <field name="model">gandola_manager.gandola</field>
+    <!-- Site Form View -->
+    <record model="ir.ui.view" id="gandola_manager.form_site">
+      <field name="name">gandola_manager site form</field>
+      <field name="model">gandola_manager.site</field>
       <field name="arch" type="xml">
-        <list>
-          <field name="name"/>
-          <field name="current_site_id" string="Current Site" decoration-danger="not is_assigned" decoration-success="is_assigned"/>
-          <field name="is_assigned" invisible="1"/>
-          <field name="site_ids" widget="many2many_tags"/>
-        </list>
-      </field>
-    </record>
-
-    <record model="ir.ui.view" id="gandola_manager.kanban_gandola">
-      <field name="name">gandola_manager kanban</field>
-      <field name="model">gandola_manager.gandola</field>
-      <field name="arch" type="xml">
-        <kanban>
-          <field name="name"/>
-          <field name="site_ids"/>
-          <field name="current_site_id"/>
-          <field name="is_assigned"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div class="oe_kanban_card oe_kanban_global_click">
-                <div class="oe_kanban_content">
-                  <div class="o_kanban_record_title">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="status"/>
+              </group>
+              <group>
+                <field name="start_date"/>
+                <field name="end_date"/>
+              </group>
+            </group>
+            <group>
+              <field name="address"/>
+            </group>
+            <notebook>
+              <page string="Gandolas">
+                <field name="gandola_ids">
+                  <list>
                     <field name="name"/>
-                  </div>
-                  <div class="o_kanban_record_body">
-                    <div>
-                      <strong>Current Site:</strong>
-                      <t t-if="record.is_assigned.raw_value">
-                        <span class="badge badge-pill badge-success">
-                          <field name="current_site_id"/>
-                        </span>
-                      </t>
-                      <t t-else="">
-                        <span class="badge badge-pill badge-danger">Not assigned</span>
-                      </t>
-                    </div>
-                    <div>
-                      <strong>All Sites:</strong>
-                      <t t-if="record.site_ids.raw_value.length">
-                        <field name="site_ids" widget="many2many_tags"/>
-                      </t>
-                      <t t-else="">
-                        <span class="text-muted">No sites assigned</span>
-                      </t>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </t>
-          </templates>
-        </kanban>
+                    <field name="current_site_id"/>
+                    <field name="is_assigned"/>
+                  </list>
+                </field>
+              </page>
+              <page string="Invoices">
+                <field name="invoice_ids">
+                  <list>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="invoice_date"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
+                  </list>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
       </field>
     </record>
-
-    <record model="ir.actions.act_window" id="gandola_manager.gandola_action_window">
-      <field name="name">Gandolas</field>
-      <field name="res_model">gandola_manager.gandola</field>
-      <field name="view_mode">kanban,list,form</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="gandola_manager.site_action_window">
-      <field name="name">Sites</field>
-      <field name="res_model">gandola_manager.site</field>
-      <field name="view_mode">kanban,list,form</field>
-    </record>
-
-    <menuitem name="Gandola Manager" id="gandola_manager.menu_root"/>
-    <menuitem name="Gandola" id="gandola_manager.gandola" parent="gandola_manager.menu_root" action="gandola_manager.gandola_action_window"/>
-    <menuitem name="Site" id="gandola_manager.site" parent="gandola_manager.menu_root" action="gandola_manager.site_action_window"/>
 
   </data>
 </odoo>

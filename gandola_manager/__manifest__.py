@@ -15,7 +15,9 @@ Gandola Manager App for Uniquity Ventures
     "license": "LGPL-3",
     # always loaded
     "data": [
-        "views/views.xml",
+        "views/gandola_views.xml",
+        "views/site_views.xml",
+        "views/menu_actions.xml",
         "views/templates.xml",
         "views/settings.xml",
         "security/ir.model.access.csv",

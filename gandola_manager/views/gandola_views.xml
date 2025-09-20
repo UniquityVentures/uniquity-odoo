@@ -1,0 +1,95 @@
+<odoo>
+  <data>
+    <!-- Gandola List View -->
+    <record model="ir.ui.view" id="gandola_manager.list_gandola">
+      <field name="name">gandola_manager list</field>
+      <field name="model">gandola_manager.gandola</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="current_site_id" string="Current Site" decoration-danger="not is_assigned" decoration-success="is_assigned"/>
+          <field name="is_assigned" invisible="1"/>
+          <field name="site_ids" widget="many2many_tags"/>
+        </list>
+      </field>
+    </record>
+
+    <!-- Gandola Kanban View -->
+    <record model="ir.ui.view" id="gandola_manager.kanban_gandola">
+      <field name="name">gandola_manager kanban</field>
+      <field name="model">gandola_manager.gandola</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="name"/>
+          <field name="site_ids"/>
+          <field name="current_site_id"/>
+          <field name="is_assigned"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_card oe_kanban_global_click">
+                <div class="oe_kanban_content">
+                  <div class="o_kanban_record_title">
+                    <field name="name"/>
+                  </div>
+                  <div class="o_kanban_record_body">
+                    <div>
+                      <strong>Current Site:</strong>
+                      <t t-if="record.is_assigned.raw_value">
+                        <span class="badge badge-pill badge-success">
+                          <field name="current_site_id"/>
+                        </span>
+                      </t>
+                      <t t-else="">
+                        <span class="badge badge-pill badge-danger">Not assigned</span>
+                      </t>
+                    </div>
+                    <div>
+                      <strong>All Sites:</strong>
+                      <t t-if="record.site_ids.raw_value.length">
+                        <field name="site_ids" widget="many2many_tags"/>
+                      </t>
+                      <t t-else="">
+                        <span class="text-muted">No sites assigned</span>
+                      </t>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <!-- Gandola Form View -->
+    <record model="ir.ui.view" id="gandola_manager.form_gandola">
+      <field name="name">gandola_manager gandola form</field>
+      <field name="model">gandola_manager.gandola</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="is_assigned" readonly="1"/>
+              <field name="current_site_id" readonly="1"/>
+            </group>
+            <notebook>
+              <page string="Sites">
+                <field name="site_ids">
+                  <list>
+                    <field name="name"/>
+                    <field name="address"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="status"/>
+                  </list>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>
